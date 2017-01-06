@@ -96,6 +96,88 @@ gen compmsq=rnormal(73.72, 11.49)
 // A. Within the company, are there any divisions whose employees have an attitude problem? Why?
 // B. Within the company, are there any divisions whose employees are happy? Why?
 
+// Could get complicated with this, or keep it simple - compare summary statistics, or do ttests, or even run regressions
+
+// compare summary statistics
+bysort div: sum msq
+bysort div: sum psq
+bysort div: sum jdiw
+bysort div: sum jdic
+bysort div: sum jdis
+bysort div: sum jdipro
+
+// t-test
+// create dummies
+tab div, gen(divdum)
+
+// Is the manufacturing division happier/less happy than all other division?
+ttest msq, by(divdum1)
+ttest psq, by(divdum1)
+ttest jdiw, by(divdum1)
+ttest jdic, by(divdum1)
+ttest jdis, by(divdum1)
+ttest jdipro, by(divdum1)
+
+// Is the admin staff division happier/less happy than all other division?
+ttest msq, by(divdum2)
+ttest psq, by(divdum2)
+ttest jdiw, by(divdum2)
+ttest jdic, by(divdum2)
+ttest jdis, by(divdum2)
+ttest jdipro, by(divdum2)
+
+// Is the R&D division happier/less happy than all other division?
+ttest msq, by(divdum3)
+ttest psq, by(divdum3)
+ttest jdiw, by(divdum3)
+ttest jdic, by(divdum3)
+ttest jdis, by(divdum3)
+ttest jdipro, by(divdum3)
+
+// Is the new business development division happier/less happy than all other division?
+ttest msq, by(divdum4)
+ttest psq, by(divdum4)
+ttest jdiw, by(divdum4)
+ttest jdic, by(divdum4)
+ttest jdis, by(divdum4)
+ttest jdipro, by(divdum4)
+
+// Is the sales and marketing division happier/less happy than all other division?
+ttest msq, by(divdum5)
+ttest psq, by(divdum5)
+ttest jdiw, by(divdum5)
+ttest jdic, by(divdum5)
+ttest jdis, by(divdum5)
+ttest jdipro, by(divdum5)
+
+// regression with dummies
+regress msq i.div
+regress psq i.div
+regress jdiw i.div
+regress jdic i.div
+regress jdis i.div
+regress jdipro i.div
+
+// more complicated regressions (and intro to programming loops)
+
+// adding demographic variables only
+foreach dvar in msq psq jdiw jdic jdis jdipro {
+regress `dvar' i.div eeo sex age educ
+}
+
+// Instead of dumping everything in, what if we are more specific in terms of the variables we use?
+
+// for instance - for pay satisfaction, merit pay in the last 3 years and satisfaction with accuracy of merit pay are very significant!
+regress psq i.div merit accur
+// add " Perceived link between performance and pay", also significant
+regress psq i.div merit accur imp3
+
+stop
+
+
+
+
+
 stop
 
 
