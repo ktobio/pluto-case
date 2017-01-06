@@ -228,6 +228,8 @@ label var racedum5 "White"
 // learn a different kind of loop
 foreach var in msq psq jdiw jdic jdis jdipro {
 forvalues x=1/5 {
+d `var'
+d racedum`x'
 ttest `var', by(racedum`x') 
 }
 }
